@@ -73,8 +73,10 @@ class MapMetric:public Metric {
                         const double *score, data_size_t num_data, std::vector<double> *out) {
     CHECK_GT(npos, 0);
     // get sorted indices by score
-    std::vector<data_size_t> sorted_idx(num_data);
-    std::iota(sorted_idx.begin(), sorted_idx.end(), 0);
+    std::vector<data_size_t> sorted_idx;
+    for (data_size_t i = 0; i < num_data; ++i) {
+      sorted_idx.emplace_back(i);
+    }
     std::stable_sort(sorted_idx.begin(), sorted_idx.end(),
                      [score](data_size_t a, data_size_t b) {return score[a] > score[b]; });
     int num_hit = 0;
@@ -83,11 +85,11 @@ class MapMetric:public Metric {
     for (size_t i = 0; i < ks.size(); ++i) {
       data_size_t cur_k = std::min(ks[i], num_data);
       while (curr < cur_k) {
-        if (label[sorted_idx[curr]] > 0.5f) {
-          sum_ap += static_cast<double>(++num_hit) / (static_cast<double>(curr) + 1.0);
+        if (label[sorted_idx[curr++]] > 0.5f) {
+          sum_ap += static_cast<double>(++num_hit) / static_cast<double>(curr);
         }
-        ++curr;
       }
+      CHECK_LE(num_hit, npos);
       (*out)[i] = sum_ap / std::min(npos, cur_k);
     }
   }

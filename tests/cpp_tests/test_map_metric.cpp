@@ -28,9 +28,8 @@ TEST_F(MapMetricTest, CalMapAtK) {
 }
 
 TEST_F(MapMetricTest, Eval) {
-  LightGBM::MapMetric metric = LightGBM::MapMetric(LightGBM::Config(
-    std::unordered_map<std::string, std::string>{{"eval_at", "2,5"}}
-  ));
+  LightGBM::MapMetric metric = LightGBM::MapMetric(
+    LightGBM::Config(std::unordered_map<std::string, std::string>{{"eval_at", "2,5"}}));
   // 7 documents across 2 queries: query 0 has 4 docs, query 1 has 3 docs
   constexpr LightGBM::data_size_t num_data = 9;
   LightGBM::Metadata metadata;
