@@ -18,8 +18,8 @@ TEST_F(MapMetricTest, CalMapAtK) {
   LightGBM::MapMetric::CalMapAtK({2, 5}, 2,
                                  new LightGBM::label_t[]{0.4f, 0.6f, 0.8f, 0.2f}, new double[]{1., 3., 2., 4.},
                                  4, &out);
-  EXPECT_NEAR(out[0], 0.25, 1e-6;
-  EXPECT_NEAR(out[1], 7 / 12., 1e-6;
+  EXPECT_NEAR(out[0], 0.25, 1e-6);
+  EXPECT_NEAR(out[1], 7 / 12., 1e-6);
   LightGBM::MapMetric::CalMapAtK({2, 5}, 2,
                                  new LightGBM::label_t[]{0.1f, 0.9f, 0.8f}, new double[]{6., 1., 2.},
                                  3, &out);
