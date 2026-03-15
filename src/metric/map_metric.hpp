@@ -83,15 +83,14 @@ class MapMetric:public Metric {
     double sum_ap = 0.0f;
     data_size_t curr = 0;
     for (size_t i = 0; i < ks.size(); ++i) {
-      data_size_t cur_k = std::min(ks[i], num_data);
-      while (curr < cur_k) {
+      while (curr < std::min(ks[i], num_data)) {
         if (label[sorted_idx[curr++]] > 0.5f) {
           sum_ap += static_cast<double>(++num_hit) / static_cast<double>(curr);
         }
       }
-      CHECK_LE(num_hit, npos);
-      (*out)[i] = sum_ap / std::min(npos, cur_k);
+      (*out)[i] = sum_ap / std::min(npos, ks[i]);
     }
+    CHECK_LE(num_hit, npos);
   }
 
   std::vector<double> Eval(const double* score, const ObjectiveFunction*) const override {
