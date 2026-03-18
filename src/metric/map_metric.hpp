@@ -10,8 +10,9 @@
 #include <LightGBM/utils/log.h>
 #include <LightGBM/utils/openmp_wrapper.h>
 
-#include <string>
 #include <algorithm>
+#include <numeric>
+#include <string>
 #include <vector>
 
 namespace LightGBM {
@@ -74,10 +75,8 @@ class MapMetric:public Metric {
     CHECK_GT(npos, 0);
     CHECK_LE(npos, num_data);
     // get sorted indices by score
-    std::vector<data_size_t> sorted_idx;
-    for (data_size_t i = 0; i < num_data; ++i) {
-      sorted_idx.emplace_back(i);
-    }
+    std::vector<data_size_t> sorted_idx(num_data);
+    std::iota(sorted_idx.begin(), sorted_idx.end(), 0);
     std::stable_sort(sorted_idx.begin(), sorted_idx.end(),
                      [score](data_size_t a, data_size_t b) {return score[a] > score[b]; });
     int num_hit = 0;
